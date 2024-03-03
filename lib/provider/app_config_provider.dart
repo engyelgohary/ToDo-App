@@ -46,6 +46,9 @@ class AppConfigProvider extends ChangeNotifier {
     return false;
   },).toList();
   // sort tasks
+  taskList.sort((task1, task2) {
+   return task1.time!.compareTo(task2.time!);
+  },);
  notifyListeners(); 
 }
 void changeDate(DateTime newSelectDate){
