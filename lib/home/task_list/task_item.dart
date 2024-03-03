@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:untitled/model/task.dart';
 
 import '../../mytheme.dart';
 import '../../provider/app_config_provider.dart';
 
 
 class Task_item extends StatelessWidget {
+  Task task ;
+  Task_item({required this.task});
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<AppConfigProvider>(context);
@@ -29,7 +32,7 @@ class Task_item extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'task',
+                task.title ?? "",
                 style: provider.isDark()
                     ? Theme.of(context)
                         .textTheme
@@ -41,7 +44,7 @@ class Task_item extends StatelessWidget {
                         .copyWith(color: MyTheme.primaryColor),
               ),
               Text(
-                'decription',
+                task.description ?? "",
                 style: provider.isDark()
                     ? Theme.of(context)
                         .textTheme
