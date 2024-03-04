@@ -3,13 +3,19 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:untitled/home/task_list/edit_task_list.dart';
 import 'package:untitled/provider/app_config_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'home/home_screen.dart';
 import 'home/task_list/add_task_list.dart';
 import 'mytheme.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+
 
 void main() async {
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  FlutterNativeSplash.remove();
   WidgetsFlutterBinding.ensureInitialized();
   Platform.isAndroid ?
   await Firebase.initializeApp(
@@ -24,7 +30,7 @@ void main() async {
   await Firebase.initializeApp();
   await FirebaseFirestore.instance.disableNetwork();
   FirebaseFirestore.instance.settings =
-      const Settings(cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED);
+       Settings(cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED);
   runApp(ChangeNotifierProvider(
       create: (context) => AppConfigProvider(), child: MyApp()));
 }
@@ -44,6 +50,7 @@ class MyApp extends StatelessWidget {
       routes: {
         HomeScreen.routeName: (context) => HomeScreen(),
         Add_Task.routeName: (context) => Add_Task(),
+        Edit_task.routeName:(context) => Edit_task(),
       },
       theme: MyTheme.lightThem,
       darkTheme: MyTheme.darkThem,
