@@ -103,7 +103,7 @@ class Task_item extends StatelessWidget {
                 child: task.isDone!
                     ? Center(
             child: Text(
-              'Done',
+              'Done !',
               style: TextStyle(
                 color: MyTheme.whiteColor,
                 fontSize: 25,
