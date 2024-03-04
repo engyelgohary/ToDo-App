@@ -9,7 +9,9 @@ class TaskList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<AppConfigProvider>(context);
-    provider.getAllTasksfromfirestore();
+        
+        provider.getAllTasksfromfirestore();
+          
     return Column(
       children: [
         EasyDateTimeLine(

@@ -16,4 +16,15 @@ class Firebaseutils {
    task.id =taskDocref.id;
    return taskDocref.set(task);
   }
+
+  static Future<void> deleteTask(Task task){
+    return getTaskCollection().doc(task.id).delete();
+  }
+   static Future<void> updateTask(Task task) async { 
+      await getTaskCollection().doc(task.id).update(task.tofirebase());
+  }
+   static Future<void> updateTaskDoneStatus(Task task, bool isDone) {
+    var taskDocRef = getTaskCollection().doc(task.id);
+    return taskDocRef.update({'isDone': isDone});
+  }
 }

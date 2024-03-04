@@ -19,6 +19,7 @@ class _Add_TaskState extends State<Add_Task> {
   String des = '';
   var selecteddate = DateTime.now();
   var _FromKey = GlobalKey<FormState>();
+  late AppConfigProvider provider;
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<AppConfigProvider>(context);
@@ -131,7 +132,7 @@ class _Add_TaskState extends State<Add_Task> {
     );
   }
 
-  void showCalender() async {
+  showCalender() async {
     var date = await showDatePicker(
         context: context,
         firstDate: DateTime.now(),
@@ -154,6 +155,7 @@ class _Add_TaskState extends State<Add_Task> {
           ),
         );
         Navigator.pop(context);
+               provider.getAllTasksfromfirestore();
       });
     }
   }

@@ -12,5 +12,7 @@
   "title_task": "Title",
   "des": "Description",
   "date": "Select time",
-  "add": "Add"
+  "add": "Add",
+  "save":"Save",
+  "back":"Back"
 }
