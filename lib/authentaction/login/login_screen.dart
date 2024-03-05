@@ -6,9 +6,12 @@ import 'package:provider/provider.dart';
 import 'package:untitled/authentaction/alert_dialog.dart';
 import 'package:untitled/authentaction/custom_text_form_filed.dart';
 import 'package:untitled/authentaction/register/register_screen.dart';
+import 'package:untitled/firebase_utils.dart';
 import 'package:untitled/home/home_screen.dart';
 import 'package:untitled/mytheme.dart';
 import 'package:untitled/provider/app_config_provider.dart';
+
+import '../../provider/authprovider.dart';
 
 class Login extends StatefulWidget {
   static String routeName = "Login";
@@ -52,7 +55,6 @@ class _LoginState extends State<Login> {
             ),
             centerTitle: true,
             backgroundColor: Colors.transparent,
-            automaticallyImplyLeading: false,
           ),
           body: SingleChildScrollView(
             child: Column(children: [
@@ -79,7 +81,7 @@ class _LoginState extends State<Login> {
                         keyboardType: TextInputType.emailAddress,
                         controller: emailController,
                         validator: (Text) {
-                          if (Text!.isEmpty) {
+                          if (Text!.trim().isEmpty) {
                             return "Please Enter Email";
                           }
                           bool emailValid = RegExp(
@@ -92,11 +94,12 @@ class _LoginState extends State<Login> {
                         },
                       ),
                       CustomTextFormField(
+                        obscuretext: true,
                         labelText: "Password",
                         keyboardType: TextInputType.number,
                         controller: PasswordController,
                         validator: (Text) {
-                          if (Text!.isEmpty) {
+                          if (Text!.trim().isEmpty) {
                             return "Please Enter Password";
                           }
                           return null;
@@ -178,6 +181,12 @@ class _LoginState extends State<Login> {
           email: emailController.text,
           password: PasswordController.text,
         );
+        var user = await Firebaseutils.readUserFromFirestore(credential.user?.uid ??"");
+        if(user == null){
+          return;
+        }
+         var authuser = Provider.of<AuthUsers>(context,listen: false);
+        authuser.updateUsers(user);
         // hide loading
         DialogUlits.hideLoading(context);
         // show message
@@ -186,7 +195,7 @@ class _LoginState extends State<Login> {
             message: "Login Successfully",
             posAction: "OK",
             posFunction: () {
-              Navigator.of(context).pushNamed(HomeScreen.routeName);
+              Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
             });
       } on FirebaseAuthException catch (e) {
         if (e.code == 'invalid-credential') {

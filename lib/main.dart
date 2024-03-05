@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -8,6 +7,7 @@ import 'package:untitled/authentaction/register/register_screen.dart';
 import 'package:untitled/home/task_list/edit_task_list.dart';
 import 'package:untitled/provider/app_config_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:untitled/provider/authprovider.dart';
 import 'home/home_screen.dart';
 import 'home/task_list/add_task_list.dart';
 import 'mytheme.dart';
@@ -30,11 +30,15 @@ void main() async {
   )
       :
   await Firebase.initializeApp();
-  await FirebaseFirestore.instance.disableNetwork();
-  FirebaseFirestore.instance.settings =
-       Settings(cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED);
-  runApp(ChangeNotifierProvider(
-      create: (context) => AppConfigProvider(), child: MyApp()));
+  // await FirebaseFirestore.instance.disableNetwork();
+  // FirebaseFirestore.instance.settings =
+  //      Settings(cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED);
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create:(context) => AppConfigProvider()),
+    ChangeNotifierProvider(create: (context)=>AuthUsers()),
+  ],
+  child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {

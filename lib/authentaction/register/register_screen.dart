@@ -5,10 +5,13 @@ import 'package:provider/provider.dart';
 import 'package:untitled/authentaction/alert_dialog.dart';
 import 'package:untitled/authentaction/custom_text_form_filed.dart';
 import 'package:untitled/authentaction/login/login_screen.dart';
+import 'package:untitled/firebase_utils.dart';
 import 'package:untitled/home/home_screen.dart';
+import 'package:untitled/model/user.dart';
 import 'package:untitled/mytheme.dart';
 import 'package:untitled/provider/app_config_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:untitled/provider/authprovider.dart';
 
 class Register extends StatefulWidget {
   static String routeName = "Register";
@@ -56,7 +59,6 @@ class _RegisterState extends State<Register> {
             ),
             centerTitle: true,
             backgroundColor: Colors.transparent,
-            automaticallyImplyLeading: false,
           ),
           body: SingleChildScrollView(
             child: Column(children: [
@@ -72,7 +74,7 @@ class _RegisterState extends State<Register> {
                         labelText: "User Name",
                         controller: nameController,
                         validator: (Text) {
-                          if (Text!.isEmpty) {
+                          if (Text!.trim().isEmpty) {
                             return "Please Enter Name";
                           }
                           return null;
@@ -83,7 +85,7 @@ class _RegisterState extends State<Register> {
                         keyboardType: TextInputType.emailAddress,
                         controller: emailController,
                         validator: (Text) {
-                          if (Text!.isEmpty) {
+                          if (Text!.trim().isEmpty) {
                             return "Please Enter Email";
                           }
                           bool emailValid = RegExp(
@@ -96,11 +98,12 @@ class _RegisterState extends State<Register> {
                         },
                       ),
                       CustomTextFormField(
+                        obscuretext: true,
                         labelText: "Password",
                         keyboardType: TextInputType.number,
                         controller: PasswordController,
                         validator: (Text) {
-                          if (Text!.isEmpty) {
+                          if (Text!.trim().isEmpty) {
                             return "Please Enter Password";
                           }
                           if (Text.length < 6) {
@@ -110,11 +113,12 @@ class _RegisterState extends State<Register> {
                         },
                       ),
                       CustomTextFormField(
+                        obscuretext: true,
                         labelText: "Confrim Password",
                         keyboardType: TextInputType.number,
                         controller: confimPasswordController,
                         validator: (Text) {
-                          if (Text!.isEmpty) {
+                          if (Text!.trim().isEmpty) {
                             return "Please Enter Confim Password";
                           }
                           if (Text != PasswordController.text) {
@@ -146,20 +150,7 @@ class _RegisterState extends State<Register> {
                               ],
                             )),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: InkWell(
-                            onTap: () {
-                              Navigator.of(context).pushNamed(Login.routeName);
-                            },
-                            child: Text(
-                              "Already have Account",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleSmall!
-                                  .copyWith(fontSize: 20),
-                            )),
-                      ),
+                     
                     ],
                   )),
             ]),
@@ -179,6 +170,10 @@ class _RegisterState extends State<Register> {
           email: emailController.text,
           password: PasswordController.text,
         );
+        MyUser user = MyUser(id: credential.user?.uid, name: nameController.text, email: emailController.text);
+        var authuser = Provider.of<AuthUsers>(context,listen: false);
+        authuser.updateUsers(user);
+        await Firebaseutils.addUserToFireStore(user);
         // hide loading
         DialogUlits.hideLoading(context);
         // show message
@@ -187,7 +182,7 @@ class _RegisterState extends State<Register> {
             message: "Register Successfully",
             posAction: "OK",
             posFunction: () {
-              Navigator.of(context).pushNamed(HomeScreen.routeName);
+              Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
             });
       } on FirebaseAuthException catch (e) {
         if (e.code == 'weak-password') {
