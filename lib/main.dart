@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:untitled/authentaction/login/login_screen.dart';
 import 'package:untitled/authentaction/register/register_screen.dart';
 import 'package:untitled/home/task_list/edit_task_list.dart';
 import 'package:untitled/provider/app_config_provider.dart';
@@ -47,11 +48,12 @@ class MyApp extends StatelessWidget {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       debugShowCheckedModeBanner: false,
-      initialRoute: Register.routeName,
+      initialRoute: Login.routeName,
       routes: {
         HomeScreen.routeName: (context) => HomeScreen(),
         Add_Task.routeName: (context) => Add_Task(),
         Register.routeName:(context) => Register(),
+        Login.routeName:(context) => Login(),
         Edit_task.routeName:(context) => Edit_task(),
       },
       theme: MyTheme.lightThem,
