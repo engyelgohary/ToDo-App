@@ -1,30 +1,26 @@
 // ignore_for_file: use_build_context_synchronously, unused_local_variable, prefer_const_literals_to_create_immutables, prefer_const_constructors, avoid_types_as_parameter_names, non_constant_identifier_names, unnecessary_brace_in_string_interps, use_key_in_widget_constructors
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/authentaction/alert_dialog.dart';
 import 'package:untitled/authentaction/custom_text_form_filed.dart';
-import 'package:untitled/authentaction/login/login_screen.dart';
+import 'package:untitled/authentaction/register/register_screen.dart';
 import 'package:untitled/home/home_screen.dart';
 import 'package:untitled/mytheme.dart';
 import 'package:untitled/provider/app_config_provider.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
-class Register extends StatefulWidget {
-  static String routeName = "Register";
+class Login extends StatefulWidget {
+  static String routeName = "Login";
 
   @override
-  State<Register> createState() => _RegisterState();
+  State<Login> createState() => _LoginState();
 }
 
-class _RegisterState extends State<Register> {
-  TextEditingController nameController = TextEditingController();
-
+class _LoginState extends State<Login> {
   TextEditingController emailController = TextEditingController();
 
   TextEditingController PasswordController = TextEditingController();
-
-  TextEditingController confimPasswordController = TextEditingController();
 
   var formkey = GlobalKey<FormState>();
 
@@ -48,7 +44,7 @@ class _RegisterState extends State<Register> {
           backgroundColor: Colors.transparent,
           appBar: AppBar(
             title: Text(
-              "Create Account",
+              "Login",
               style: Theme.of(context)
                   .textTheme
                   .titleMedium!
@@ -68,15 +64,15 @@ class _RegisterState extends State<Register> {
                       SizedBox(
                         height: MediaQuery.sizeOf(context).height * .23,
                       ),
-                      CustomTextFormField(
-                        labelText: "User Name",
-                        controller: nameController,
-                        validator: (Text) {
-                          if (Text!.isEmpty) {
-                            return "Please Enter Name";
-                          }
-                          return null;
-                        },
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "Welcome Back !",
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
                       ),
                       CustomTextFormField(
                         labelText: "Email",
@@ -103,25 +99,24 @@ class _RegisterState extends State<Register> {
                           if (Text!.isEmpty) {
                             return "Please Enter Password";
                           }
-                          if (Text.length < 6) {
-                            return "Enter at least 6 numbers";
-                          }
                           return null;
                         },
                       ),
-                      CustomTextFormField(
-                        labelText: "Confrim Password",
-                        keyboardType: TextInputType.number,
-                        controller: confimPasswordController,
-                        validator: (Text) {
-                          if (Text!.isEmpty) {
-                            return "Please Enter Confim Password";
-                          }
-                          if (Text != PasswordController.text) {
-                            return "Confrim Password dosen't match your Password";
-                          }
-                          return null;
-                        },
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "Forget Password ?",
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleSmall!
+                              .copyWith(fontSize: 20),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -131,13 +126,13 @@ class _RegisterState extends State<Register> {
                                   MaterialStatePropertyAll(EdgeInsets.all(15)),
                             ),
                             onPressed: () {
-                              register();
+                              login();
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  "Create Account",
+                                  "Login",
                                   style: TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold),
@@ -146,14 +141,18 @@ class _RegisterState extends State<Register> {
                               ],
                             )),
                       ),
+                      SizedBox(
+                        height: 10,
+                      ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: InkWell(
                             onTap: () {
-                              Navigator.of(context).pushNamed(Login.routeName);
+                              Navigator.of(context)
+                                  .pushNamed(Register.routeName);
                             },
                             child: Text(
-                              "Already have Account",
+                              "Or Create Account",
                               style: Theme.of(context)
                                   .textTheme
                                   .titleSmall!
@@ -169,13 +168,13 @@ class _RegisterState extends State<Register> {
     );
   }
 
-  void register() async {
+  void login() async {
     if (formkey.currentState!.validate() == true) {
+      // show loading
+      DialogUlits.showLoading(context: context, message: "Loading");
       try {
-        // show loading
-        DialogUlits.showLoading(context: context, message: "Loading");
         final credential =
-            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+            await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: emailController.text,
           password: PasswordController.text,
         );
@@ -184,28 +183,20 @@ class _RegisterState extends State<Register> {
         // show message
         DialogUlits.showMessage(
             context: context,
-            message: "Register Successfully",
+            message: "Login Successfully",
             posAction: "OK",
             posFunction: () {
               Navigator.of(context).pushNamed(HomeScreen.routeName);
             });
       } on FirebaseAuthException catch (e) {
-        if (e.code == 'weak-password') {
-          // hide loading
+        if (e.code == 'invalid-credential') {
+// hide loading
           DialogUlits.hideLoading(context);
           // show message
           DialogUlits.showMessage(
               context: context,
-              message: "The password provided is too weak.",
-              posAction: "Ok",
-              title: "Error");
-        } else if (e.code == 'email-already-in-use') {
-          // hide loading
-          DialogUlits.hideLoading(context);
-          // show message
-          DialogUlits.showMessage(
-              context: context,
-              message: "The account already exists for that email.",
+              message:
+                  "The supplied auth credential is incorrect, malformed or has expired.",
               posAction: "Ok",
               title: "Error");
         }
