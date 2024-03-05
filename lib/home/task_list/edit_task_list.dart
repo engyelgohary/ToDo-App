@@ -7,6 +7,7 @@ import 'package:untitled/model/task.dart';
 import 'package:untitled/mytheme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:untitled/provider/app_config_provider.dart';
+import 'package:untitled/provider/authprovider.dart';
 
 class Edit_task extends StatefulWidget {
   static String routeName = 'Edit task';
@@ -21,6 +22,7 @@ class _Edit_taskState extends State<Edit_task> {
    late TextEditingController _titleController;
    late TextEditingController _descriptionController;
    late Task args;
+   late AuthUsers userprovider;
   
   @override
   void initState() {
@@ -41,6 +43,9 @@ class _Edit_taskState extends State<Edit_task> {
     var provider = Provider.of<AppConfigProvider>(context);
       _titleController.text = args.title!;
     _descriptionController.text = args.description!;
+            var userprovider = Provider.of<AuthUsers>(context);
+
+
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: MediaQuery.of(context).size.height * .23,
@@ -181,7 +186,7 @@ class _Edit_taskState extends State<Edit_task> {
    void _updateTask(Task task) {
     task.title = _titleController.text;
     task.description = _descriptionController.text;
-    Firebaseutils.updateTask(task)
+    Firebaseutils.updateTask(task,userprovider.currentUser!.id!)
         .then((_) {
       Navigator.of(context).pop();
     });

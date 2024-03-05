@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/firebase_utils.dart';
 import 'package:untitled/model/task.dart';
+import 'package:untitled/provider/authprovider.dart';
 import '../../mytheme.dart';
 import '../../provider/app_config_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -145,18 +146,19 @@ class _Add_TaskState extends State<Add_Task> {
   }
 
   void addTask() {
+        var userprovider = Provider.of<AuthUsers>(context,listen: false);
+
     if (_FromKey.currentState!.validate() == true) {
       Task task = Task(title: title, description: des, time: selecteddate);
-      Firebaseutils.addTaskToFireStore(task)
-          .timeout(Duration(milliseconds: 500), onTimeout: () {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Task Added Successfully.'),
-          ),
-        );
-        Navigator.pop(context);
-               provider.getAllTasksfromfirestore();
-      });
+      Firebaseutils.addTaskToFireStore(task, userprovider.currentUser!.id!)
+          .then((value) => {
+                Navigator.pop(context),
+                 ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Task Added Successfully.'),
+                  ),
+                ),
+              });
     }
   }
 }

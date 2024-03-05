@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:untitled/firebase_utils.dart';
 import 'package:untitled/home/task_list/edit_task_list.dart';
 import 'package:untitled/model/task.dart';
+import 'package:untitled/provider/authprovider.dart';
 import '../../mytheme.dart';
 import '../../provider/app_config_provider.dart';
 
@@ -14,6 +15,8 @@ class Task_item extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<AppConfigProvider>(context);
+        var userprovider = Provider.of<AuthUsers>(context);
+
     return Container(
         margin: EdgeInsets.all(15),
       child: Slidable(
@@ -24,8 +27,9 @@ class Task_item extends StatelessWidget {
         SlidableAction(
          borderRadius: BorderRadius.circular(20),
           onPressed: (context) {
-            Firebaseutils.deleteTask(task).timeout(Duration(milliseconds: 500));
-            provider.getAllTasksfromfirestore();
+            Firebaseutils.deleteTask(task,userprovider.currentUser!.id!).then((value) => {
+              provider.getAllTasksfromfirestore(userprovider.currentUser!.id!)
+            });
           },
           backgroundColor: MyTheme.redColor,
           foregroundColor: MyTheme.whiteColor,
@@ -120,9 +124,9 @@ class Task_item extends StatelessWidget {
                   ),
                   onPressed: () {
                 bool newIsDoneStatus = !task.isDone!;
-                Firebaseutils.updateTaskDoneStatus(task, newIsDoneStatus)
+                Firebaseutils.updateTaskDoneStatus(task, newIsDoneStatus,userprovider.currentUser!.id!)
                     .then((value) {
-                  provider.getAllTasksfromfirestore();
+                  provider.getAllTasksfromfirestore(userprovider.currentUser!.id!);
                 });
                   },
                 ),

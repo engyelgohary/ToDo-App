@@ -29,9 +29,9 @@ class AppConfigProvider extends ChangeNotifier {
     return appTheme == ThemeMode.dark;
   }
 
-  void getAllTasksfromfirestore () async{
+  void getAllTasksfromfirestore (String uid) async{
     // get all tasks
-   QuerySnapshot<Task> query = await Firebaseutils.getTaskCollection().get();
+   QuerySnapshot<Task> query = await Firebaseutils.getTaskCollection(uid).get();
  taskList = query.docs.map((doc) {
     return doc.data();
   },).toList();
@@ -51,8 +51,8 @@ class AppConfigProvider extends ChangeNotifier {
   },);
  notifyListeners(); 
 }
-void changeDate(DateTime newSelectDate){
+void changeDate(DateTime newSelectDate,String uid){
     selectedDate = newSelectDate;
-    getAllTasksfromfirestore();
+    getAllTasksfromfirestore(uid);
 }
 }
