@@ -4,7 +4,8 @@ import 'model/task.dart';
 
 class Firebaseutils {
   static CollectionReference<Task> getTaskCollection(String uid) {
-    return getUserCollection().doc(uid)
+    return getUserCollection()
+        .doc(uid)
         .collection(Task.collectionName)
         .withConverter<Task>(
             fromFirestore: ((snapshot, options) =>
@@ -12,22 +13,18 @@ class Firebaseutils {
             toFirestore: (task, options) => task.tofirebase());
   }
 
-  static Future<void> addTaskToFireStore(Task task,String uid) {
+  static Future<void> addTaskToFireStore(Task task, String uid) {
     var taskColllectionRefrence = getTaskCollection(uid);
     var taskDocref = taskColllectionRefrence.doc();
     task.id = taskDocref.id;
     return taskDocref.set(task);
   }
 
-  static Future<void> deleteTask(Task task,String uid) {
+  static Future<void> deleteTask(Task task, String uid) {
     return getTaskCollection(uid).doc(task.id).delete();
   }
 
-  static Future<void> updateTask(Task task,String uid) async {
-    await getTaskCollection(uid).doc(task.id).update(task.tofirebase());
-  }
-
-  static Future<void> updateTaskDoneStatus(Task task, bool isDone,String uid) {
+  static Future<void> updateTaskDoneStatus(Task task, bool isDone, String uid) {
     var taskDocRef = getTaskCollection(uid).doc(task.id);
     return taskDocRef.update({'isDone': isDone});
   }

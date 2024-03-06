@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, camel_case_types, non_constant_identifier_names, prefer_final_fields
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -26,109 +28,111 @@ class _Add_TaskState extends State<Add_Task> {
     var provider = Provider.of<AppConfigProvider>(context);
     return Container(
       margin: EdgeInsets.all(20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Center(
-              child: Text(
-            AppLocalizations.of(context)!.add_new_task,
-            style: provider.isDark()
-                ? Theme.of(context).textTheme.titleMedium
-                : Theme.of(context).textTheme.titleMedium,
-          )),
-          Form(
-            key: _FromKey,
-            child: Column(
-              children: [
-                TextFormField(
-                  style: TextStyle(fontSize: 15),
-                  onChanged: (text) {
-                    title = text;
-                  },
-                  validator: (text) {
-                    if (text!.isEmpty) {
-                      return 'Please enter your title';
-                    }
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                      hintText: "Enter Task title here ",
-                      hintStyle: TextStyle(fontSize: 15)),
-                ),
-                SizedBox(
-                  height: 40,
-                ),
-                TextFormField(
-                  style: TextStyle(fontSize: 15),
-                  onChanged: (text) {
-                    des = text;
-                  },
-                  validator: (text) {
-                    if (text!.isEmpty) {
-                      return 'Please enter your description here';
-                    }
-                    return null;
-                  },
-                  maxLines: 4,
-                  decoration: InputDecoration(
-                    hintText: "Enter Task description here ",
-                    hintStyle: TextStyle(fontSize: 15),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Center(
+                child: Text(
+              AppLocalizations.of(context)!.add_new_task,
+              style: provider.isDark()
+                  ? Theme.of(context).textTheme.titleMedium
+                  : Theme.of(context).textTheme.titleMedium,
+            )),
+            Form(
+              key: _FromKey,
+              child: Column(
+                children: [
+                  TextFormField(
+                    style: TextStyle(fontSize: 15),
+                    onChanged: (text) {
+                      title = text;
+                    },
+                    validator: (text) {
+                      if (text!.isEmpty) {
+                        return 'Please enter your title';
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                        hintText: "Enter Task title here ",
+                        hintStyle: TextStyle(fontSize: 15)),
                   ),
-                ),
-              ],
+                  SizedBox(
+                    height: 40,
+                  ),
+                  TextFormField(
+                    style: TextStyle(fontSize: 15),
+                    onChanged: (text) {
+                      des = text;
+                    },
+                    validator: (text) {
+                      if (text!.isEmpty) {
+                        return 'Please enter your description here';
+                      }
+                      return null;
+                    },
+                    maxLines: 4,
+                    decoration: InputDecoration(
+                      hintText: "Enter Task description here ",
+                      hintStyle: TextStyle(fontSize: 15),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          SizedBox(
-            height: 40,
-          ),
-          Text(
-            AppLocalizations.of(context)!.date,
-            style: provider.isDark()
-                ? Theme.of(context)
-                    .textTheme
-                    .titleSmall!
-                    .copyWith(fontSize: 20, color: MyTheme.whiteColor)
-                : Theme.of(context)
-                    .textTheme
-                    .titleSmall!
-                    .copyWith(fontSize: 20),
-          ),
-          SizedBox(
-            height: 40,
-          ),
-          Center(
-              child: InkWell(
-            onTap: () {
-              showCalender();
-            },
-            child: Text(
-              DateFormat.yMMMd().format(selecteddate),
+            SizedBox(
+              height: 40,
+            ),
+            Text(
+              AppLocalizations.of(context)!.date,
               style: provider.isDark()
                   ? Theme.of(context)
                       .textTheme
                       .titleSmall!
-                      .copyWith(color: MyTheme.whiteColor)
-                  : Theme.of(context).textTheme.titleSmall,
+                      .copyWith(fontSize: 20, color: MyTheme.whiteColor)
+                  : Theme.of(context)
+                      .textTheme
+                      .titleSmall!
+                      .copyWith(fontSize: 20),
             ),
-          )),
-          SizedBox(
-            height: 40,
-          ),
-          ElevatedButton(
-              onPressed: () {
-                addTask();
+            SizedBox(
+              height: 40,
+            ),
+            Center(
+                child: InkWell(
+              onTap: () {
+                showCalender();
               },
-              child: Text(AppLocalizations.of(context)!.add,
-                  style: provider.isDark()
-                      ? Theme.of(context)
-                          .textTheme
-                          .titleSmall!
-                          .copyWith(color: MyTheme.whiteColor)
-                      : Theme.of(context)
-                          .textTheme
-                          .titleSmall!
-                          .copyWith(color: MyTheme.whiteColor)))
-        ],
+              child: Text(
+                DateFormat.yMMMd().format(selecteddate),
+                style: provider.isDark()
+                    ? Theme.of(context)
+                        .textTheme
+                        .titleSmall!
+                        .copyWith(color: MyTheme.whiteColor)
+                    : Theme.of(context).textTheme.titleSmall,
+              ),
+            )),
+            SizedBox(
+              height: 40,
+            ),
+            ElevatedButton(
+                onPressed: () {
+                  addTask();
+                },
+                child: Text(AppLocalizations.of(context)!.add,
+                    style: provider.isDark()
+                        ? Theme.of(context)
+                            .textTheme
+                            .titleSmall!
+                            .copyWith(color: MyTheme.whiteColor)
+                        : Theme.of(context)
+                            .textTheme
+                            .titleSmall!
+                            .copyWith(color: MyTheme.whiteColor)))
+          ],
+        ),
       ),
     );
   }
@@ -146,14 +150,14 @@ class _Add_TaskState extends State<Add_Task> {
   }
 
   void addTask() {
-        var userprovider = Provider.of<AuthUsers>(context,listen: false);
+    var userprovider = Provider.of<AuthUsers>(context, listen: false);
 
     if (_FromKey.currentState!.validate() == true) {
       Task task = Task(title: title, description: des, time: selecteddate);
       Firebaseutils.addTaskToFireStore(task, userprovider.currentUser!.id!)
           .then((value) => {
                 Navigator.pop(context),
-                 ScaffoldMessenger.of(context).showSnackBar(
+                ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text('Task Added Successfully.'),
                   ),
