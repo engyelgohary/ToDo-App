@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/authentaction/alert_dialog.dart';
 import 'package:untitled/authentaction/custom_text_form_filed.dart';
-import 'package:untitled/authentaction/login/login_screen.dart';
 import 'package:untitled/firebase_utils.dart';
 import 'package:untitled/home/home_screen.dart';
 import 'package:untitled/model/user.dart';

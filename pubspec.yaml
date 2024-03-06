@@ -45,6 +45,7 @@ dependencies:
   flutter_slidable: ^3.0.1
   flutter_native_splash: ^2.3.7
   firebase_auth: ^4.16.0
+  shared_preferences: ^2.2.2
 
 dev_dependencies:
   flutter_test:

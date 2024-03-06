@@ -1,3 +1,5 @@
+// ignore_for_file: camel_case_types, must_be_immutable, prefer_const_constructors, use_key_in_widget_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
@@ -8,55 +10,57 @@ import 'package:untitled/provider/authprovider.dart';
 import '../../mytheme.dart';
 import '../../provider/app_config_provider.dart';
 
-
 class Task_item extends StatelessWidget {
-  Task task ;
+  Task task;
   Task_item({required this.task});
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<AppConfigProvider>(context);
-        var userprovider = Provider.of<AuthUsers>(context);
+    var userprovider = Provider.of<AuthUsers>(context);
 
     return Container(
-        margin: EdgeInsets.all(15),
+      margin: EdgeInsets.all(15),
       child: Slidable(
         startActionPane: ActionPane(
           extentRatio: .4,
-      motion: const ScrollMotion(),
-      children:  [
-        SlidableAction(
-         borderRadius: BorderRadius.circular(20),
-          onPressed: (context) {
-            Firebaseutils.deleteTask(task,userprovider.currentUser!.id!).then((value) => {
-              provider.getAllTasksfromfirestore(userprovider.currentUser!.id!)
-            });
-          },
-          backgroundColor: MyTheme.redColor,
-          foregroundColor: MyTheme.whiteColor,
-          icon: Icons.delete,
-          label: 'Delete',
-        ),
-          SlidableAction(
-         borderRadius: BorderRadius.circular(20),
-          onPressed: (context) {
+          motion: const ScrollMotion(),
+          children: [
+            SlidableAction(
+              borderRadius: BorderRadius.circular(20),
+              onPressed: (context) {
+                Firebaseutils.deleteTask(task, userprovider.currentUser!.id!)
+                    .then((value) => {
+                          provider.getAllTasksfromfirestore(
+                              userprovider.currentUser!.id!)
+                        });
+              },
+              backgroundColor: MyTheme.redColor,
+              foregroundColor: MyTheme.whiteColor,
+              icon: Icons.delete,
+              label: 'Delete',
+            ),
+            SlidableAction(
+              borderRadius: BorderRadius.circular(20),
+              onPressed: (context) {
                 Navigator.of(context).pushNamed(Edit_task.routeName,
-                arguments: Task(
-                  title: task.title,
-                   description: task.description,
-                    time: task.time)
-                );
-          },
-          backgroundColor: MyTheme.primaryColor,
-          foregroundColor: MyTheme.whiteColor,
-          icon: Icons.edit,
-          label: 'Edit',
+                    arguments: Task(
+                        title: task.title,
+                        description: task.description,
+                        time: task.time));
+              },
+              backgroundColor: MyTheme.primaryColor,
+              foregroundColor: MyTheme.whiteColor,
+              icon: Icons.edit,
+              label: 'Edit',
+            ),
+          ],
         ),
-      ],
-      ),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(25),
-            color: provider.isDark() ? MyTheme.bottomColordark : MyTheme.whiteColor,
+            color: provider.isDark()
+                ? MyTheme.bottomColordark
+                : MyTheme.whiteColor,
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -102,34 +106,38 @@ class Task_item extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 9),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
-                color: task.isDone! ? MyTheme.greenColor : MyTheme.primaryColor,   
-                               ),
+                  color:
+                      task.isDone! ? MyTheme.greenColor : MyTheme.primaryColor,
+                ),
                 child: task.isDone!
                     ? Center(
-            child: Text(
-              'Done !',
-              style: TextStyle(
-                color: MyTheme.whiteColor,
-                fontSize: 25,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          )
-        :
-                IconButton(
-                  icon: Icon(
-                    Icons.check,
-                    color: MyTheme.whiteColor,
-                    size: 30,
-                  ),
-                  onPressed: () {
-                bool newIsDoneStatus = !task.isDone!;
-                Firebaseutils.updateTaskDoneStatus(task, newIsDoneStatus,userprovider.currentUser!.id!)
-                    .then((value) {
-                  provider.getAllTasksfromfirestore(userprovider.currentUser!.id!);
-                });
-                  },
-                ),
+                        child: Text(
+                          'Done !',
+                          style: TextStyle(
+                            color: MyTheme.whiteColor,
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      )
+                    : IconButton(
+                        icon: Icon(
+                          Icons.check,
+                          color: MyTheme.whiteColor,
+                          size: 30,
+                        ),
+                        onPressed: () {
+                          bool newIsDoneStatus = !task.isDone!;
+                          Firebaseutils.updateTaskDoneStatus(
+                                  task,
+                                  newIsDoneStatus,
+                                  userprovider.currentUser!.id!)
+                              .then((value) {
+                            provider.getAllTasksfromfirestore(
+                                userprovider.currentUser!.id!);
+                          });
+                        },
+                      ),
               ),
             ],
           ),

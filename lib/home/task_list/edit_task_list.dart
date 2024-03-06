@@ -1,13 +1,12 @@
+// ignore_for_file: prefer_const_constructors, camel_case_types, use_key_in_widget_constructors
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:untitled/firebase_utils.dart';
-import 'package:untitled/home/task_list/add_task_list.dart';
 import 'package:untitled/model/task.dart';
 import 'package:untitled/mytheme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:untitled/provider/app_config_provider.dart';
-import 'package:untitled/provider/authprovider.dart';
 
 class Edit_task extends StatefulWidget {
   static String routeName = 'Edit task';
@@ -17,35 +16,17 @@ class Edit_task extends StatefulWidget {
 }
 
 class _Edit_taskState extends State<Edit_task> {
-   String title = '';
-   String des = '';
-   late TextEditingController _titleController;
-   late TextEditingController _descriptionController;
-   late Task args;
-   late AuthUsers userprovider;
+  String title = '';
+  String des = '';
+  late Task args;
   
-  @override
-  void initState() {
-    super.initState();
-    _titleController = TextEditingController();
-    _descriptionController = TextEditingController();
-  }
 
-  @override
-  void dispose() {
-    _titleController.dispose();
-    _descriptionController.dispose();
-    super.dispose();
-  }
   @override
   Widget build(BuildContext context) {
     Task args = ModalRoute.of(context)?.settings.arguments as Task;
     var provider = Provider.of<AppConfigProvider>(context);
-      _titleController.text = args.title!;
-    _descriptionController.text = args.description!;
-            var userprovider = Provider.of<AuthUsers>(context);
 
-
+    
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: MediaQuery.of(context).size.height * .23,
@@ -73,16 +54,16 @@ class _Edit_taskState extends State<Edit_task> {
             SizedBox(
               height: 10,
             ),
-                 TextFormField(
-                style: TextStyle(fontSize: 15),
-                controller: _titleController,
-                onChanged: (text) {
-                  setState(() {
-                    title = text;
-                  });
-                },
-                enabled: true,
-              ),
+            TextFormField(
+              controller: TextEditingController(text: args.title),
+              style: TextStyle(fontSize: 15),
+              onChanged: (text) {
+                setState(() {
+                  title = text;
+                });
+              },
+              enabled: true,
+            ),
             SizedBox(
               height: 20,
             ),
@@ -92,21 +73,20 @@ class _Edit_taskState extends State<Edit_task> {
                   ? Theme.of(context).textTheme.titleMedium
                   : Theme.of(context).textTheme.titleMedium,
             ),
-       
             SizedBox(
               height: 10,
             ),
-           TextFormField(
-                style: TextStyle(fontSize: 15),
-                controller: _descriptionController,
-                onChanged: (text) {
-                  setState(() {
-                    des = text;
-                  });
-                },
-                maxLines: 4,
-                enabled: true,
-              ),
+            TextFormField(
+              style: TextStyle(fontSize: 15),
+              controller: TextEditingController(text: args.description),
+              onChanged: (text) {
+                setState(() {
+                  des = text;
+                });
+              },
+              maxLines: 4,
+              enabled: true,
+            ),
             SizedBox(
               height: 20,
             ),
@@ -150,7 +130,7 @@ class _Edit_taskState extends State<Edit_task> {
               children: [
                 ElevatedButton(
                     onPressed: () {
-                       _updateTask(args);
+                    
                     },
                     child: Text(AppLocalizations.of(context)!.save,
                         style: provider.isDark()
@@ -182,13 +162,5 @@ class _Edit_taskState extends State<Edit_task> {
         ),
       ),
     );
-  }
-   void _updateTask(Task task) {
-    task.title = _titleController.text;
-    task.description = _descriptionController.text;
-    Firebaseutils.updateTask(task,userprovider.currentUser!.id!)
-        .then((_) {
-      Navigator.of(context).pop();
-    });
   }
 }

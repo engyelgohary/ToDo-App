@@ -1,3 +1,5 @@
+// ignore_for_file: use_key_in_widget_constructors
+
 import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,13 +15,13 @@ class TaskList extends StatelessWidget {
     var userprovider = Provider.of<AuthUsers>(context);
 
     provider.getAllTasksfromfirestore(userprovider.currentUser!.id!);
-          
+
     return Column(
       children: [
         EasyDateTimeLine(
           initialDate: provider.selectedDate,
           onDateChange: (selectedDate) {
-            provider.changeDate(selectedDate,userprovider.currentUser!.id!);
+            provider.changeDate(selectedDate, userprovider.currentUser!.id!);
           },
           activeColor: MyTheme.primaryColor,
           dayProps: EasyDayProps(
@@ -30,7 +32,9 @@ class TaskList extends StatelessWidget {
         Expanded(
           child: ListView.builder(
             itemBuilder: (context, index) {
-              return Task_item(task: provider.taskList[index],);
+              return Task_item(
+                task: provider.taskList[index],
+              );
             },
             itemCount: provider.taskList.length,
           ),
