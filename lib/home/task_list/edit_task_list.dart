@@ -13,7 +13,7 @@ import 'package:untitled/provider/authprovider.dart';
 class Edit_task extends StatefulWidget {
   static String routeName = 'Edit task';
   final Task taskmodel;
-  Edit_task({required this.taskmodel});
+  const Edit_task({required this.taskmodel});
 
   @override
   State<Edit_task> createState() => _Edit_taskState();
@@ -22,15 +22,12 @@ class Edit_task extends StatefulWidget {
 class _Edit_taskState extends State<Edit_task> {
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
-  TextEditingController timeController = TextEditingController();
-  DateFormat dateFormat = DateFormat('dd MMMM yyyy');
 
   @override
   void initState() {
     super.initState();
     titleController.text = widget.taskmodel.title!;
     descriptionController.text = widget.taskmodel.description!;
-    timeController.text=widget.taskmodel.time!= null?dateFormat.format(widget.taskmodel.time!):'';
   }
 
   @override
