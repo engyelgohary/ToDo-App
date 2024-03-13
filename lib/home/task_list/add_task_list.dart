@@ -55,8 +55,10 @@ class _Add_TaskState extends State<Add_Task> {
                       return null;
                     },
                     decoration: InputDecoration(
-                        hintText: "Enter Task title here ",
-                        hintStyle: TextStyle(fontSize: 15)),
+                        hintText:  AppLocalizations.of(context)!.hintTitle,
+                        hintStyle:  provider.isDark()
+                  ? Theme.of(context).textTheme.titleMedium
+                  : Theme.of(context).textTheme.titleMedium,),
                   ),
                   SizedBox(
                     height: 40,
@@ -74,8 +76,10 @@ class _Add_TaskState extends State<Add_Task> {
                     },
                     maxLines: 4,
                     decoration: InputDecoration(
-                      hintText: "Enter Task description here ",
-                      hintStyle: TextStyle(fontSize: 15),
+                      hintText:  AppLocalizations.of(context)!.hintDesc,
+                      hintStyle:  provider.isDark()
+                  ? Theme.of(context).textTheme.titleMedium
+                  : Theme.of(context).textTheme.titleMedium,
                     ),
                   ),
                 ],

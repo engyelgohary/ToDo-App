@@ -9,6 +9,7 @@ import 'package:untitled/model/task.dart';
 import 'package:untitled/provider/authprovider.dart';
 import '../../mytheme.dart';
 import '../../provider/app_config_provider.dart';
+import 'package:page_transition/page_transition.dart';
 
 class Task_item extends StatelessWidget {
   Task task;
@@ -42,11 +43,13 @@ class Task_item extends StatelessWidget {
             SlidableAction(
               borderRadius: BorderRadius.circular(20),
               onPressed: (context) {
-                Navigator.of(context).pushNamed(Edit_task.routeName,
-                    arguments: Task(
-                        title: task.title,
-                        description: task.description,
-                        time: task.time));
+                Navigator.push(
+                  context,
+                  PageTransition(
+                      type: PageTransitionType.rightToLeft,
+                      child: Edit_task(taskmodel: task),
+                    ),
+                );
               },
               backgroundColor: MyTheme.primaryColor,
               foregroundColor: MyTheme.whiteColor,

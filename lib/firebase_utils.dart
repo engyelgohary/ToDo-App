@@ -46,4 +46,9 @@ class Firebaseutils {
     var querySnapshot = await getUserCollection().doc(uid).get();
     return querySnapshot.data();
   }
+
+  static Future<void> updateTask(Task task, String uid) {
+    var taskDocRef = getTaskCollection(uid).doc(task.id);
+    return taskDocRef.update(task.tofirebase());
+  }
 }
