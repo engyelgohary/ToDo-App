@@ -58,6 +58,7 @@ class _RegisterState extends State<Register> {
             ),
             centerTitle: true,
             backgroundColor: Colors.transparent,
+            automaticallyImplyLeading: true,
           ),
           body: SingleChildScrollView(
             child: Column(children: [

@@ -13,6 +13,8 @@
   "des": "Description",
   "date": "Select time",
   "add": "Add",
-  "save":"Save",
-  "back":"Back"
+  "save":"Save Changes",
+  "back":"Back",
+  "hintTitle":"Enter Task title here",
+  "hintDesc":"Enter Task description here "
 }

@@ -16,8 +16,14 @@ import 'mytheme.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 void main() async {
-  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  await Future.delayed(const Duration(seconds: 1));
+
+  await Future.delayed(const Duration(seconds: 1));
+
+  await Future.delayed(const Duration(seconds: 1));
+
   FlutterNativeSplash.remove();
   WidgetsFlutterBinding.ensureInitialized();
   Platform.isAndroid
@@ -28,14 +34,13 @@ void main() async {
               messagingSenderId: "784062052248",
               projectId: "test-c8dc2"))
       : await Firebase.initializeApp();
-      FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  FlutterNativeSplash.remove();
   // await FirebaseFirestore.instance.disableNetwork();
   // FirebaseFirestore.instance.settings =
   //      Settings(cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED);
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider(create: (context) => AppConfigProvider()..loadSettings()),
+      ChangeNotifierProvider(
+          create: (context) => AppConfigProvider()..loadSettings()),
       ChangeNotifierProvider(create: (context) => AuthUsers()),
     ],
     child: MyApp(),
@@ -59,7 +64,6 @@ class MyApp extends StatelessWidget {
         Add_Task.routeName: (context) => Add_Task(),
         Register.routeName: (context) => Register(),
         Login.routeName: (context) => Login(),
-        Edit_task.routeName: (context) => Edit_task(),
       },
       theme: MyTheme.lightThem,
       darkTheme: MyTheme.darkThem,
